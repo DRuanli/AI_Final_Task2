@@ -49,7 +49,6 @@ class HumanPlayer(Player):
         """
         while True:
             try:
-                # This is only used in console mode, as Pygame mode handles input differently
                 move = input(f"Enter your move (row,col) [1-9,1-9]: ")
                 row, col = map(int, move.split(','))
                 # Adjust to 0-indexed
