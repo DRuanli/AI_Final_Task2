@@ -1,7 +1,18 @@
 from abc import ABC, abstractmethod
 from typing import Tuple
-from game_board import GameBoard
-from ai_engine import AIEngine
+from rich.console import Console
+from rich.prompt import Prompt
+from rich.text import Text
+import time
+
+
+# Forward declarations to avoid circular imports
+class GameBoard:
+    pass
+
+
+class AIEngine:
+    pass
 
 
 class Player(ABC):
@@ -18,6 +29,7 @@ class Player(ABC):
             symbol (str): The player's symbol on the board ('X' or 'O')
         """
         self.symbol: str = symbol
+        self.console = Console()
 
     @abstractmethod
     def make_move(self, board: GameBoard) -> Tuple[int, int]:
@@ -42,7 +54,7 @@ class HumanPlayer(Player):
 
     def make_move(self, board: GameBoard) -> Tuple[int, int]:
         """
-        Get move from user input.
+        Get move from user input with enhanced UI.
 
         Args:
             board: The game board to make a move on
@@ -52,7 +64,15 @@ class HumanPlayer(Player):
         """
         while True:
             try:
-                move = input(f"Enter your move (row,col) [1-9,1-9]: ")
+                # Use rich prompt for better UI
+                move_text = Text()
+                move_text.append("Enter your move (", style="bright_white")
+                move_text.append("row,col", style="bold yellow")
+                move_text.append(") [1-9,1-9]: ", style="bright_white")
+
+                self.console.print(move_text, end="")
+                move = input()
+
                 row, col = map(int, move.split(','))
                 # Adjust to 0-indexed
                 row -= 1
@@ -62,11 +82,13 @@ class HumanPlayer(Player):
                     if board.make_move(row, col, self.symbol):
                         return row, col
                     else:
-                        print("Position already taken. Try again.")
+                        self.console.print("Position already taken. Try again.", style="bold red")
                 else:
-                    print("Invalid position. Row and column must be between 1 and 9.")
+                    self.console.print("Invalid position. Row and column must be between 1 and 9.",
+                                       style="bold red")
             except ValueError:
-                print("Invalid input. Enter as 'row,col' (e.g., '3,4').")
+                self.console.print("Invalid input. Enter as 'row,col' (e.g., '3,4').",
+                                   style="bold red")
 
 
 class ComputerPlayer(Player):
@@ -85,7 +107,7 @@ class ComputerPlayer(Player):
 
     def make_move(self, board: GameBoard) -> Tuple[int, int]:
         """
-        Use AI to determine and make the best move.
+        Use AI to determine and make the best move with animated "thinking".
 
         Args:
             board: The game board to make a move on
@@ -93,8 +115,23 @@ class ComputerPlayer(Player):
         Returns:
             tuple: (row, col) coordinates of the move
         """
-        print("Computer is thinking...")
-        row, col = self.ai_engine.get_best_move(board, self.symbol)
+        # Animated thinking effect
+        thinking_text = Text("Computer is thinking", style="bold blue")
+        with self.console.status(thinking_text, spinner="dots") as status:
+            # Simulate "thinking" time
+            time.sleep(1.5)
+
+            # Get the best move from AI engine
+            row, col = self.ai_engine.get_best_move(board, self.symbol)
+
+        # Make the move with animation
         board.make_move(row, col, self.symbol)
-        print(f"Computer placed at: {row + 1},{col + 1}")
+
+        # Display move information
+        move_info = Text()
+        move_info.append("Computer placed at: ", style="bright_white")
+        move_info.append(f"{row + 1},{col + 1}", style="bold yellow")
+        self.console.print(move_info)
+
+        time.sleep(0.5)  # Brief pause to let player see the message
         return row, col

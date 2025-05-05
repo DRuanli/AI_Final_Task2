@@ -1,8 +1,10 @@
 import random
 import time
 from typing import List, Tuple, Optional, Union, Any
-from game_board import GameBoard  # Assuming this is imported
 
+# Forward declaration to avoid circular imports
+class GameBoard:
+    pass
 
 class AIEngine:
     """
@@ -52,9 +54,6 @@ class AIEngine:
         alpha = float('-inf')
         beta = float('inf')
 
-        # Add a small delay to make it seem like the computer is "thinking"
-        time.sleep(0.5)
-
         empty_positions = board.get_empty_positions()
 
         # Sort moves to try center positions first (typically stronger in Tic-Tac-Toe)
@@ -64,7 +63,7 @@ class AIEngine:
         for row, col in empty_positions:
             # Try this move
             board_copy = board.get_board_copy()
-            board_copy.make_move(row, col, player_symbol)
+            board_copy.board[row][col] = player_symbol  # Direct assignment for evaluation only
 
             # Evaluate this move using h-minimax with alpha-beta pruning
             score = self.minimax(board_copy, self.depth_limit - 1, False, alpha, beta)
@@ -131,7 +130,7 @@ class AIEngine:
             max_eval = float('-inf')
             for row, col in empty_positions:
                 board_copy = board.get_board_copy()
-                board_copy.make_move(row, col, self.player_symbol)
+                board_copy.board[row][col] = self.player_symbol  # Direct assignment for evaluation only
                 eval_score = self.minimax(board_copy, depth - 1, False, alpha, beta)
                 max_eval = max(max_eval, eval_score)
                 alpha = max(alpha, max_eval)
@@ -142,7 +141,7 @@ class AIEngine:
             min_eval = float('inf')
             for row, col in empty_positions:
                 board_copy = board.get_board_copy()
-                board_copy.make_move(row, col, self.opponent_symbol)
+                board_copy.board[row][col] = self.opponent_symbol  # Direct assignment for evaluation only
                 eval_score = self.minimax(board_copy, depth - 1, True, alpha, beta)
                 min_eval = min(min_eval, eval_score)
                 beta = min(beta, min_eval)
