@@ -1,10 +1,7 @@
 import random
 import time
 from typing import List, Tuple, Optional, Union, Any
-
-# Forward declaration to avoid circular imports
-class GameBoard:
-    pass
+from game_board import GameBoard
 
 class AIEngine:
     """

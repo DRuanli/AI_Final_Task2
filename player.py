@@ -4,15 +4,8 @@ from rich.console import Console
 from rich.prompt import Prompt
 from rich.text import Text
 import time
-
-
-# Forward declarations to avoid circular imports
-class GameBoard:
-    pass
-
-
-class AIEngine:
-    pass
+from game_board import GameBoard
+from ai_engine import AIEngine
 
 
 class Player(ABC):
