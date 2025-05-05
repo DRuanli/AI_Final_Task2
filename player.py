@@ -1,4 +1,7 @@
 from abc import ABC, abstractmethod
+from typing import Tuple
+from game_board import GameBoard
+from ai_engine import AIEngine
 
 
 class Player(ABC):
@@ -7,17 +10,17 @@ class Player(ABC):
     Defines common interface for human and computer players.
     """
 
-    def __init__(self, symbol):
+    def __init__(self, symbol: str) -> None:
         """
         Initialize a player with their game symbol.
 
         Args:
             symbol (str): The player's symbol on the board ('X' or 'O')
         """
-        self.symbol = symbol
+        self.symbol: str = symbol
 
     @abstractmethod
-    def make_move(self, board):
+    def make_move(self, board: GameBoard) -> Tuple[int, int]:
         """
         Make a move on the board.
 
@@ -29,7 +32,7 @@ class Player(ABC):
         """
         pass
 
-    def get_opponent_symbol(self):
+    def get_opponent_symbol(self) -> str:
         """Get the opponent's symbol."""
         return 'O' if self.symbol == 'X' else 'X'
 
@@ -37,7 +40,7 @@ class Player(ABC):
 class HumanPlayer(Player):
     """Human player that gets moves from user input."""
 
-    def make_move(self, board):
+    def make_move(self, board: GameBoard) -> Tuple[int, int]:
         """
         Get move from user input.
 
@@ -69,7 +72,7 @@ class HumanPlayer(Player):
 class ComputerPlayer(Player):
     """Computer player that uses AI to determine moves."""
 
-    def __init__(self, symbol, ai_engine):
+    def __init__(self, symbol: str, ai_engine: AIEngine) -> None:
         """
         Initialize computer player with symbol and AI engine.
 
@@ -78,9 +81,9 @@ class ComputerPlayer(Player):
             ai_engine: The AI engine to use for determining moves
         """
         super().__init__(symbol)
-        self.ai_engine = ai_engine
+        self.ai_engine: AIEngine = ai_engine
 
-    def make_move(self, board):
+    def make_move(self, board: GameBoard) -> Tuple[int, int]:
         """
         Use AI to determine and make the best move.
 

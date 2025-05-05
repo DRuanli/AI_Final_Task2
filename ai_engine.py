@@ -1,5 +1,7 @@
 import random
 import time
+from typing import List, Tuple, Optional, Union, Any
+from game_board import GameBoard  # Assuming this is imported
 
 
 class AIEngine:
@@ -8,7 +10,7 @@ class AIEngine:
     Combines minimax with alpha-beta pruning and a custom heuristic function.
     """
 
-    def __init__(self, depth_limit=3):
+    def __init__(self, depth_limit: int = 3) -> None:
         """
         Initialize the AI engine with a specified depth limit.
 
@@ -30,7 +32,7 @@ class AIEngine:
         self.player_symbol = None
         self.opponent_symbol = None
 
-    def get_best_move(self, board, player_symbol):
+    def get_best_move(self, board: GameBoard, player_symbol: str) -> Tuple[int, int]:
         """
         Find the best move using alpha-beta search.
 
@@ -77,7 +79,7 @@ class AIEngine:
         # If no good move found (should not happen), pick a random one
         return best_move if best_move else random.choice(empty_positions)
 
-    def _position_value(self, pos):
+    def _position_value(self, pos: Tuple[int, int]) -> int:
         """
         Helper function to value positions for move ordering.
         Center positions are more valuable in Tic-Tac-Toe.
@@ -93,7 +95,7 @@ class AIEngine:
         center_distance = abs(row - 4) + abs(col - 4)
         return -center_distance
 
-    def minimax(self, board, depth, is_maximizing, alpha, beta):
+    def minimax(self, board: GameBoard, depth: int, is_maximizing: bool, alpha: float, beta: float) -> float:
         """
         Minimax algorithm with alpha-beta pruning and heuristic evaluation.
 
@@ -148,7 +150,7 @@ class AIEngine:
                     break  # Alpha cut-off
             return min_eval
 
-    def evaluate_board(self, board):
+    def evaluate_board(self, board: GameBoard) -> int:
         """
         Heuristic evaluation function for non-terminal states.
 
@@ -188,7 +190,7 @@ class AIEngine:
 
         return score
 
-    def evaluate_lines(self, board):
+    def evaluate_lines(self, board: GameBoard) -> int:
         """
         Evaluate the board by counting potential winning lines.
 
@@ -227,7 +229,7 @@ class AIEngine:
 
         return score
 
-    def evaluate_window(self, window):
+    def evaluate_window(self, window: List[str]) -> int:
         """
         Evaluate a window of 4 positions.
 

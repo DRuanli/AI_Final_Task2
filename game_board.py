@@ -1,16 +1,18 @@
+from typing import List, Tuple
+
 class GameBoard:
     """
     Class representing the 9x9 Tic-Tac-Toe game board.
     Handles board state management and win condition checking.
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize an empty 9x9 board."""
-        self.board = [[' ' for _ in range(9)] for _ in range(9)]
-        self.size = 9
-        self.win_length = 4  # Number of consecutive pieces needed to win
+        self.board: List[List[str]] = [[' ' for _ in range(9)] for _ in range(9)]
+        self.size: int = 9
+        self.win_length: int = 4  # Number of consecutive pieces needed to win
 
-    def make_move(self, row, col, symbol):
+    def make_move(self, row: int, col: int, symbol: str) -> bool:
         """
         Place a symbol ('X' or 'O') at the specified position.
 
@@ -27,7 +29,7 @@ class GameBoard:
             return True
         return False
 
-    def check_win(self, symbol):
+    def check_win(self, symbol: str) -> bool:
         """
         Check if the specified symbol has 4 in a row (horizontally, vertically, or diagonally).
 
@@ -63,7 +65,7 @@ class GameBoard:
 
         return False
 
-    def is_full(self):
+    def is_full(self) -> bool:
         """
         Check if the board is full.
 
@@ -72,7 +74,7 @@ class GameBoard:
         """
         return all(self.board[row][col] != ' ' for row in range(self.size) for col in range(self.size))
 
-    def get_empty_positions(self):
+    def get_empty_positions(self) -> List[Tuple[int, int]]:
         """
         Return a list of empty positions.
 
@@ -81,7 +83,7 @@ class GameBoard:
         """
         return [(row, col) for row in range(self.size) for col in range(self.size) if self.board[row][col] == ' ']
 
-    def display(self):
+    def display(self) -> None:
         """Display the board in the console."""
         # Display column numbers
         print("   " + " ".join(str(i + 1) for i in range(self.size)))
@@ -98,7 +100,7 @@ class GameBoard:
 
         print("  +" + "-" * self.size * 2 + "+")
 
-    def get_board_copy(self):
+    def get_board_copy(self) -> "GameBoard":
         """
         Return a deep copy of the board.
 
