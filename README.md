@@ -43,7 +43,7 @@ The project follows a Model-View-Controller architecture:
 - `player.py`: Defines player behaviors (abstract, human, and computer)
 - `ai_engine.py`: Implements the heuristic alpha-beta search algorithm
 - `ui.py`: Handles all display and user input functionality
-
+ 
 ## Design Decisions
 
 ### Depth Limit Selection
