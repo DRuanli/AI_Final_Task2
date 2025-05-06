@@ -46,13 +46,13 @@ class GameUI:
 
         # Welcome message with border
         welcome_text = Text("✨ Welcome to ", style="dim white")
-        welcome_text.append("ATic-Tac-Toe", style="bold color(218)")
+        welcome_text.append("ATic-Tac-Toe", style="bold color(2)")
         welcome_text.append(" preview! ✨", style="dim white")
 
         welcome_panel = Panel(
             welcome_text,
             box=box.ROUNDED,
-            border_style="color(218)",
+            border_style="color(2)",
             padding=(1, 2)
         )
 
@@ -61,9 +61,9 @@ class GameUI:
 
         # Create main title panel
         title_panel = Panel(
-            Text(title_art, style="color(218)"),
+            Text(title_art, style="color(2)"),
             box=box.HEAVY,
-            border_style="color(218)",
+            border_style="color(2)",
             padding=(1, 1)
         )
         self.console.print(title_panel)
