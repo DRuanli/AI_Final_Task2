@@ -33,11 +33,15 @@ class GameController:
             tuple: (row, col) coordinates of the valid move
         """
         while True:
+            # Get input coordinates from UI
             row, col = self.ui.prompt_for_move()
 
+            # Validate the move
             if self.board.board[row][col] == ' ':
                 # Valid move
                 self.board.make_move(row, col, self.human_player.symbol)
+                # Animate the move
+                self.ui.animate_move(self.board.board, row, col, self.human_player.symbol)
                 return row, col
             else:
                 self.ui.console.print("Position already taken. Try again.", style="bold red")
@@ -53,10 +57,13 @@ class GameController:
         self.ui.display_computer_thinking()
 
         # Get the best move from AI engine
-        row, col = self.ai_engine.get_best_move(self.board, self.computer_player.symbol)
+        row, col = self.computer_player.get_move(self.board)
 
         # Make the move
         self.board.make_move(row, col, self.computer_player.symbol)
+
+        # Animate the move
+        self.ui.animate_move(self.board.board, row, col, self.computer_player.symbol)
 
         # Display move information
         self.ui.display_computer_move(row, col)

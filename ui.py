@@ -215,6 +215,33 @@ class GameUI:
         border.append("┛")
         self.console.print(border)
 
+    def animate_move(self, board, row: int, col: int, symbol: str) -> None:
+        """
+        Create a simple animation effect for a new move.
+
+        Args:
+            board: The game board
+            row (int): Row index of the move
+            col (int): Column index of the move
+            symbol (str): Player symbol placed
+        """
+        # Flash the new move with different highlight colors
+        highlight_styles = [
+            "bold white on green",
+            "bold white on yellow",
+            "bold white on green"
+        ]
+
+        # Save the original cell value
+        original_cell = board[row][col]
+
+        # Clear screen between animation frames
+        for style in highlight_styles:
+            self.clear_screen()
+            # Create a temporary last_move for highlighting
+            self.display_board(board, (row, col))
+            time.sleep(0.2)
+
     def prompt_for_move(self) -> Tuple[int, int]:
         """
         Prompt the user for their move with enhanced styling that aligns with UI.
@@ -255,6 +282,7 @@ class GameUI:
             except ValueError:
                 self.console.print("⚠️  Invalid input. Enter as 'row,col' (e.g., '3,4').",
                                    style="bold red")
+
     def display_win_announcement(self, is_human_win: bool, board) -> None:
         """
         Display a stylized win announcement.
@@ -328,7 +356,6 @@ class GameUI:
 
         self.console.print()
         self.console.print(draw_panel)
-
 
     def display_computer_thinking(self) -> None:
         """Display an animated 'computer thinking' message."""
